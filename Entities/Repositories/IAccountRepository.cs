@@ -9,5 +9,6 @@ namespace Entities.Repositories
     {
         void RegisterUser(User user);
         User GetByUsernameAndPassword(string username, string password);
+        bool IsUserExist(string username);
     }
 }

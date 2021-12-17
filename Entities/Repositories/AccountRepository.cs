@@ -26,5 +26,10 @@ namespace Entities.Repositories
             return _dbContext.Users.SingleOrDefault(u => u.UserName.ToLower() == username.ToLower() 
                             && u.Password.ToLower() == password.ToLower());
         }
+
+        public bool IsUserExist(string username)
+        {
+            return _dbContext.Users.Any(us => us.UserName.ToLower() == username.ToLower());
+        }
     }
 }

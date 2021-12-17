@@ -3,13 +3,5 @@
 }
 
 <div class="text-center">
-    @if (User.HasClaim(cl => cl.Value == "admin"))
-    {
-        <h1 class="display-4">Welcome Admin</h1>
-    }
-    else
-    {
-        <h1 class="display-4">Welcome @User.Identity.Name</h1>
-
-    }
+   <h1 class="display-4">Welcome @User.Identity.Name</h1>
 </div>

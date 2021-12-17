@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,19 +26,37 @@ namespace Web.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            ViewBag.TypeUser = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Admin", Text = "Admin" },
+                new SelectListItem { Value = "VipUser", Text = "VipUser" },
+                new SelectListItem { Value = "NormalUser", Text = "NormalUser" }
+            };
             return View();
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register(RegisterModel model)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var newUser = new User { UserName = model.UserName, Password = model.Password, UserType = model.UserType };
-                _accountRepository.RegisterUser(newUser);
+                return View(model);
             }
-            return Redirect("/");
+            if (_accountRepository.IsUserExist(model.UserName))
+            {
+                ModelState.AddModelError(string.Empty, $"{model.UserName} already exist");
+                return View();
+            }
+
+            var newUser = new User { UserName = model.UserName, Password = model.Password, UserType = model.UserType };
+
+            _accountRepository.RegisterUser(newUser);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                GetClaimsPrincipal(newUser));
+            return LocalRedirect("~/");
         }
         [AllowAnonymous]
         public IActionResult Login()
@@ -55,21 +74,9 @@ namespace Web.Controllers
                 return Unauthorized();
             }
 
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, user.UserType)
-            };
-
-            var identity = new ClaimsIdentity(claims,
-                CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var principal = new ClaimsPrincipal(identity);
-
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                principal);
+                GetClaimsPrincipal(user));
 
             return Redirect("/");
         }
@@ -80,5 +87,19 @@ namespace Web.Controllers
             return Redirect("/");
         }
         
+        private ClaimsPrincipal GetClaimsPrincipal(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, user.UserType)
+            };
+
+            var identity = new ClaimsIdentity(claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return new ClaimsPrincipal(identity);
+        }
     }
 }

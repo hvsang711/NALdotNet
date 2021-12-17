@@ -26,17 +26,23 @@
                         </li>
                     </ul>
                 </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div>
-                        <ul class="nav justify-content-end">
-                            <li class="nav-item">
-                                <a asp-controller="Account" asp-action="Logout" class="btn btn-info">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                }
-            </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <ul class="nav flex-grow-1 justify-content-end">
+                                <li class="nav-item">
+                                    <a asp-controller="Account" asp-action="Logout" class="btn btn-info">Logout</a>
+                                </li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li class="nav-item" style="margin-left: 5px">
+                                        <a asp-controller="Account" asp-action="Register" class="btn btn-success">Register for User</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
         </nav>
     </header>
     <div class="container">

@@ -10,7 +10,7 @@ namespace Entities
     {
         public static async Task SeedAsync(NALDbContext context)
         {
-            await context.Users.AddAsync(new User { Id = 1, UserName = "admin", Password = "admin", UserType = UserType.Admin.ToString() });
+            await context.Users.AddAsync(new User { Id = 1, UserName = "admin", Password = "admin", UserType = "Admin" });
             await context.SaveChangesAsync();
         }
     }
