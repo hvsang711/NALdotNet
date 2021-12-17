@@ -26,6 +26,16 @@
                         </li>
                     </ul>
                 </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div>
+                        <ul class="nav justify-content-end">
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Logout" class="btn btn-info">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </div>
         </nav>
     </header>

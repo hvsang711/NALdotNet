@@ -1,0 +1,10 @@
+F:\NALdotNetTest\Entities\bin\Debug\netcoreapp3.1\Entities.deps.json
+F:\NALdotNetTest\Entities\bin\Debug\netcoreapp3.1\Entities.dll
+F:\NALdotNetTest\Entities\bin\Debug\netcoreapp3.1\Entities.pdb
+F:\NALdotNetTest\Entities\obj\Debug\netcoreapp3.1\Entities.csproj.AssemblyReference.cache
+F:\NALdotNetTest\Entities\obj\Debug\netcoreapp3.1\Entities.GeneratedMSBuildEditorConfig.editorconfig
+F:\NALdotNetTest\Entities\obj\Debug\netcoreapp3.1\Entities.AssemblyInfoInputs.cache
+F:\NALdotNetTest\Entities\obj\Debug\netcoreapp3.1\Entities.AssemblyInfo.cs
+F:\NALdotNetTest\Entities\obj\Debug\netcoreapp3.1\Entities.csproj.CoreCompileInputs.cache
+F:\NALdotNetTest\Entities\obj\Debug\netcoreapp3.1\Entities.dll
+F:\NALdotNetTest\Entities\obj\Debug\netcoreapp3.1\Entities.pdb

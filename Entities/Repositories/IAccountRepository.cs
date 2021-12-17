@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Entities.Repositories
 {
-    public interface IAccount
+    public interface IAccountRepository
     {
-        void Add(User user);
+        void RegisterUser(User user);
         User GetByUsernameAndPassword(string username, string password);
     }
 }
