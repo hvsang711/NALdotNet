@@ -1,6 +1,12 @@
 ﻿@model Web.Models.RegisterModel
 @{
     ViewData["Title"] = "Register";
+    var userType = new List<SelectListItem>()
+    {
+        new SelectListItem { Value = "Admin", Text = "Admin" },
+        new SelectListItem { Value = "VipUser", Text = "VipUser" },
+        new SelectListItem { Value = "NormalUser", Text = "NormalUser" }
+    };
 }
 
 <div class="container">
@@ -34,7 +40,7 @@
                 {
                     <div class="form-group">
                         <label asp-for="UserType"></label>
-                        <select class="form-control" asp-for="UserType" asp-items="ViewBag.TypeUser">
+                        <select class="form-control" asp-for="UserType" asp-items="userType">
                             <option selected disabled value="">Select</option>
                         </select>
                     </div>

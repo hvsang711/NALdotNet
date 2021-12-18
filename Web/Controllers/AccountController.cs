@@ -20,18 +20,12 @@ namespace Web.Controllers
 
         public AccountController(IAccountRepository accountRepository)
         {
-            _accountRepository = accountRepository;
+            _accountRepository = accountRepository;            
         }
 
         [AllowAnonymous]
         public IActionResult Register()
         {
-            ViewBag.TypeUser = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "Admin", Text = "Admin" },
-                new SelectListItem { Value = "VipUser", Text = "VipUser" },
-                new SelectListItem { Value = "NormalUser", Text = "NormalUser" }
-            };
             return View();
         }
 
@@ -52,10 +46,12 @@ namespace Web.Controllers
             var newUser = new User { UserName = model.UserName, Password = model.Password, UserType = model.UserType };
 
             _accountRepository.RegisterUser(newUser);
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                GetClaimsPrincipal(newUser));
+            if (!User.Identity.IsAuthenticated)
+            {
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    GetClaimsPrincipal(newUser));
+            }
             return LocalRedirect("~/");
         }
         [AllowAnonymous]
@@ -71,7 +67,8 @@ namespace Web.Controllers
             var user = _accountRepository.GetByUsernameAndPassword(model.Username, model.Password);
             if (user == null)
             {
-                return Unauthorized();
+                ModelState.AddModelError(string.Empty, "Username or Password is not correct");
+                return View();
             }
 
             await HttpContext.SignInAsync(
